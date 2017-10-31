@@ -6,14 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | Hexo</title>
+  <title>RxJava 学习笔记 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="##基本概念 ####Observable发射源，英文释义“可观察的”，在观察者模式中称为“被观察者”或“可观察对象”； ####Observer接收源，英文释义“观察者”，没错！就是观察者模式中的“观察者”，可接收Observable、Subject发射的数据； ####SubjectSubject是一个比较特殊的对象，既可充当发射源，也可充当接收源，为避免初学者被混淆，本章将不对Subject">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxJava 学习笔记">
+<meta property="og:url" content="http://yoursite.com/2017/10/31/Hexo-搭建成功/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="##基本概念 ####Observable发射源，英文释义“可观察的”，在观察者模式中称为“被观察者”或“可观察对象”； ####Observer接收源，英文释义“观察者”，没错！就是观察者模式中的“观察者”，可接收Observable、Subject发射的数据； ####SubjectSubject是一个比较特殊的对象，既可充当发射源，也可充当接收源，为避免初学者被混淆，本章将不对Subject">
+<meta property="og:updated_time" content="2017-10-31T01:43:04.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="RxJava 学习笔记">
+<meta name="twitter:description" content="##基本概念 ####Observable发射源，英文释义“可观察的”，在观察者模式中称为“被观察者”或“可观察对象”； ####Observer接收源，英文释义“观察者”，没错！就是观察者模式中的“观察者”，可接收Observable、Subject发射的数据； ####SubjectSubject是一个比较特殊的对象，既可充当发射源，也可充当接收源，为避免初学者被混淆，本章将不对Subject">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -149,76 +153,204 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-Hexo-搭建成功" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      RxJava 学习笔记
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/10/31/Hexo-搭建成功/" class="archive-article-date">
+
+        
+        <a href="/2017/10/31/Hexo-搭建成功/" class="archive-article-date">
   	<time datetime="2017-10-31T02:01:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-31</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/10/31/Hexo-搭建成功/">RxJava 学习笔记</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##基本概念</p>
+<p>####Observable<br>发射源，英文释义“可观察的”，在观察者模式中称为“被观察者”或“可观察对象”；</p>
+<p>####Observer<br>接收源，英文释义“观察者”，没错！就是观察者模式中的“观察者”，可接收Observable、Subject发射的数据；</p>
+<p>####Subject<br>Subject是一个比较特殊的对象，既可充当发射源，也可充当接收源，为避免初学者被混淆，本章将不对Subject做过多的解释和使用，重点放在Observable和Observer上，先把最基本方法的使用学会，后面再学其他的都不是什么问题；</p>
+<p>####Subscriber<br>“订阅者”，也是接收源，那它跟Observer有什么区别呢？Subscriber实现了Observer接口，比Observer多了一个最重要的方法unsubscribe( )，用来取消订阅，当你不再想接收数据了，可以调用unsubscribe( )方法停止接收，Observer 在 subscribe() 过程中,最终也会被转换成 Subscriber 对象，一般情况下，建议使用Subscriber作为接收源；</p>
+<p>####Subscription<br>Observable调用subscribe( )方法返回的对象，同样有unsubscribe( )方法，可以用来取消订阅事件；</p>
+<p>####Action0<br>RxJava中的一个接口，它只有一个无参call（）方法，且无返回值，同样还有Action1，Action2…Action9等，Action1封装了含有 1 个参的call（）方法，即call（T t），Action2封装了含有 2 个参数的call方法，即call（T1 t1，T2 t2），以此类推；</p>
+<p>####Func0<br>与Action0非常相似，也有call（）方法，但是它是有返回值的，同样也有Func0、Func1…Func9;</p>
+<p>##基本用法</p>
+<p>###Observable的创建</p>
+<ul>
+<li>使用create( ),最基本的创建方式：  </li>
+</ul>
+<p>normalObservable = Observable.create(new Observable.OnSubscribe<string>() {<br>@Override<br>public void call(Subscriber&lt;? super String&gt; subscriber) {<br>subscriber.onNext(“create1”); //发射一个”create1”的String<br>subscriber.onNext(“create2”); //发射一个”create2”的String<br>subscriber.onCompleted();//发射完成,这种方法需要手动调用onCompleted，才会回调Observer的onCompleted方法<br>}<br>});</string></p>
+<ul>
+<li>使用just()创建一个Observable并自动调用onNext()发射数据：  </li>
+</ul>
+<p>justObservable = Observable.just(“just1”,”just2”);//依次发送”just1”和”just2”</p>
+<ul>
+<li>使用from()遍历集合，发送每个item：</li>
+</ul>
+<p>List<string> list = new ArrayList&lt;&gt;();<br>list.add(“from1”);<br>list.add(“from2”);<br>list.add(“from3”);<br>fromObservable = Observable.from(list);  //遍历list 每次发送一个<br>/<strong> 注意，just()方法也可以传list，但是发送的是整个list对象，而from（）发送的是list的一个item</strong> /</string></p>
+<ul>
+<li>使用defer()，有观察者订阅时才创建Observable，并且为每个观察者创建一个新的Observable：</li>
+</ul>
+<p>deferObservable = Observable.defer(new Func0<observable<string>&gt;() {<br>@Override<br>//注意此处的call方法没有Subscriber参数<br>public Observable<string> call() {<br>return Observable.just(“deferObservable”);<br>}<br>});</string></observable<string></p>
+<ul>
+<li>使用interval(),创建一个按固定时间间隔发射整数序列的Observable，可用作定时器：</li>
+</ul>
+<p>intervalObservable = Observable.interval(1, TimeUnit.SECONDS);//每隔一秒发送一次</p>
+<ul>
+<li>使用range(),创建一个发射特定整数序列的Observable，第一个参数为起始值，第二个为发送的个数，如果为0则不发送，负数则抛异常：</li>
+</ul>
+<p>rangeObservable = Observable.range(10, 5);//将发送整数10，11，12，13，14</p>
+<ul>
+<li>使用timer(),创建一个Observable，它在一个给定的延迟后发射一个特殊的值，等同于Android中Handler的postDelay()方法：</li>
+</ul>
+<p>timeObservable = Observable.timer(3, TimeUnit.SECONDS);  //3秒后发射一个值</p>
+<ul>
+<li>使用repeat(),创建一个重复发射特定数据的Observable:</li>
+</ul>
+<p>repeatObservable = Observable.just(“repeatObservable”).repeat(3);//重复发射3次</p>
+<p>###Observer的创建<br>mObserver = new Observer<string>() {<br>@Override<br>public void onCompleted() {<br>LogUtil.log(“onCompleted”);<br>}<br>@Override<br>public void onError(Throwable e) {<br>}<br>@Override<br>public void onNext(String s) {<br>LogUtil.log(s);<br>}<br>};</string></p>
+<p>###Observable和Observer关联<br>justObservable.subscribe(mObserver);<br>mObserver的onNext方法将会依次收到来自justObservable的数据”just1”、”just2”，另外，如果你不在意数据是否接收完或者是否出现错误，即不需要Observer的onCompleted()和onError()方法，可使用Action1，subscribe()支持将Action1作为参数传入,RxJava将会调用它的call方法来接收数据，代码如下：  </p>
+<p>justObservable.subscribe(new Action1<string>() {<br>@Override<br>public void call(String s) {<br>LogUtil.log(s);<br>}<br>});</string></p>
+<p>##例子</p>
+<p>####从数据库的用户表查找出所有用户数据<br>Observable.create(new Observable.OnSubscribe<list<user>&gt;() {<br>@Override<br>public void call(Subscriber&lt;? super List<user>&gt; subscriber) {<br>List<user> userList = null;<br>···<br>//从数据库获取用户表数据并赋给userList<br>···<br>subscriber.onNext(userList);<br>}<br>}).subscribe(new Action1<list<user>&gt;() {<br>@Override<br>public void call(List<user> users) {<br>//获取到用户信息列表<br>}<br>});</user></list<user></user></user></list<user></p>
+<p>####只查询名字是“小明”的用户<br>Observable.create(new Observable.OnSubscribe<list<user>&gt;() {<br>@Override<br>public void call(Subscriber&lt;? super List<user>&gt; subscriber) {<br>List<user> userList = null;<br>···<br>//从数据库获取用户表数据并赋给userList<br>···<br>subscriber.onNext(userList);<br>}<br>}).flatMap(new Func1<list<user>, Observable<user>&gt;() {<br>@Override<br>public Observable<user> call(List<user> users) {<br>return Observable.from(users);<br>}<br>}).filter(new Func1<user, boolean="">() {<br>@Override<br>public Boolean call(User user) {<br>return user.getName().equals(“小明”);<br>}<br>}).subscribe(new Action1<user>() {<br>@Override<br>public void call(User user) {<br>//拿到谜之小明的数据<br>}<br>});</user></user,></user></user></user></list<user></user></user></list<user></p>
+<p>####改为查询小明爸爸的数据<br>Observable.create(new Observable.OnSubscribe<list<user>&gt;() {<br>@Override<br>public void call(Subscriber&lt;? super List<user>&gt; subscriber) {<br>List<user> userList = null;<br>···<br>//从数据库获取用户表数据并赋给userList<br>···<br>subscriber.onNext(userList);<br>}<br>}).flatMap(new Func1<list<user>, Observable<user>&gt;() {<br>@Override<br>public Observable<user> call(List<user> users) {<br>return Observable.from(users);<br>}<br>}).filter(new Func1<user, boolean="">() {<br>@Override<br>public Boolean call(User user) {<br>return user.getName().equals(“小明”);<br>}<br>}).map(new Func1<user, user="">() {<br>@Override<br>public User call(User user) {<br>//根据小明的数据user从数据库查找出小明的父亲user2<br>return user2;<br>}<br>}).subscribe(new Action1<user>() {<br>@Override<br>public void call(User user2) {<br>//拿到谜之小明的爸爸的数据<br>}<br>});</user></user,></user,></user></user></user></list<user></user></user></list<user></p>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/10/31/Hexo-搭建成功/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/10/30/hello-world/" class="archive-article-date">
-  	<time datetime="2017-10-30T06:14:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-30</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2017/10/30/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/10/30/hello-world/">Hello World</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -241,8 +373,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
