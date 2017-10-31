@@ -14,7 +14,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/10/31/Hexo-搭建成功/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="##基本概念 ####Observable发射源，英文释义“可观察的”，在观察者模式中称为“被观察者”或“可观察对象”； ####Observer接收源，英文释义“观察者”，没错！就是观察者模式中的“观察者”，可接收Observable、Subject发射的数据； ####SubjectSubject是一个比较特殊的对象，既可充当发射源，也可充当接收源，为避免初学者被混淆，本章将不对Subject">
-<meta property="og:updated_time" content="2017-10-31T01:43:04.000Z">
+<meta property="og:updated_time" content="2017-10-31T02:08:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RxJava 学习笔记">
 <meta name="twitter:description" content="##基本概念 ####Observable发射源，英文释义“可观察的”，在观察者模式中称为“被观察者”或“可观察对象”； ####Observer接收源，英文释义“观察者”，没错！就是观察者模式中的“观察者”，可接收Observable、Subject发射的数据； ####SubjectSubject是一个比较特殊的对象，既可充当发射源，也可充当接收源，为避免初学者被混淆，本章将不对Subject">
@@ -186,42 +186,73 @@
 <ul>
 <li>使用create( ),最基本的创建方式：  </li>
 </ul>
-<p>normalObservable = Observable.create(new Observable.OnSubscribe<string>() {<br>@Override<br>public void call(Subscriber&lt;? super String&gt; subscriber) {<br>subscriber.onNext(“create1”); //发射一个”create1”的String<br>subscriber.onNext(“create2”); //发射一个”create2”的String<br>subscriber.onCompleted();//发射完成,这种方法需要手动调用onCompleted，才会回调Observer的onCompleted方法<br>}<br>});</string></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">normalObservable = Observable.create(new Observable.OnSubscribe&lt;String&gt;() &#123;</div><div class="line">@Override  </div><div class="line">public void call(Subscriber&lt;? super String&gt; subscriber) &#123;</div><div class="line">subscriber.onNext(<span class="string">"create1"</span>); //发射一个<span class="string">"create1"</span>的String</div><div class="line">subscriber.onNext(<span class="string">"create2"</span>); //发射一个<span class="string">"create2"</span>的String</div><div class="line">subscriber.onCompleted();//发射完成,这种方法需要手动调用onCompleted，才会回调Observer的onCompleted方法</div><div class="line">&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <ul>
 <li>使用just()创建一个Observable并自动调用onNext()发射数据：  </li>
 </ul>
-<p>justObservable = Observable.just(“just1”,”just2”);//依次发送”just1”和”just2”</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">justObservable = Observable.just(<span class="string">"just1"</span>,<span class="string">"just2"</span>);//依次发送<span class="string">"just1"</span>和<span class="string">"just2"</span></div></pre></td></tr></table></figure>
 <ul>
 <li>使用from()遍历集合，发送每个item：</li>
 </ul>
-<p>List<string> list = new ArrayList&lt;&gt;();<br>list.add(“from1”);<br>list.add(“from2”);<br>list.add(“from3”);<br>fromObservable = Observable.from(list);  //遍历list 每次发送一个<br>/<strong> 注意，just()方法也可以传list，但是发送的是整个list对象，而from（）发送的是list的一个item</strong> /</string></p>
-<ul>
-<li>使用defer()，有观察者订阅时才创建Observable，并且为每个观察者创建一个新的Observable：</li>
-</ul>
-<p>deferObservable = Observable.defer(new Func0<observable<string>&gt;() {<br>@Override<br>//注意此处的call方法没有Subscriber参数<br>public Observable<string> call() {<br>return Observable.just(“deferObservable”);<br>}<br>});</string></observable<string></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">List&lt;String&gt; list = new ArrayList&lt;&gt;();</div><div class="line">list.add(<span class="string">"from1"</span>);</div><div class="line">list.add(<span class="string">"from2"</span>);</div><div class="line">list.add(<span class="string">"from3"</span>);</div><div class="line">fromObservable = Observable.from(list);  //遍历list 每次发送一个</div><div class="line">/** 注意，just()方法也可以传list，但是发送的是整个list对象，而from（）发送的是list的一个item** /</div><div class="line">* 使用defer()，有观察者订阅时才创建Observable，并且为每个观察者创建一个新的Observable：</div><div class="line"></div><div class="line">deferObservable = Observable.defer(new Func0&lt;Observable&lt;String&gt;&gt;() &#123;</div><div class="line">@Override</div><div class="line">//注意此处的call方法没有Subscriber参数</div><div class="line">public Observable&lt;String&gt; <span class="function"><span class="title">call</span></span>() &#123;</div><div class="line"><span class="built_in">return</span> Observable.just(<span class="string">"deferObservable"</span>);</div><div class="line">&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <ul>
 <li>使用interval(),创建一个按固定时间间隔发射整数序列的Observable，可用作定时器：</li>
 </ul>
-<p>intervalObservable = Observable.interval(1, TimeUnit.SECONDS);//每隔一秒发送一次</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">intervalObservable = Observable.interval(1, TimeUnit.SECONDS);//每隔一秒发送一次</div></pre></td></tr></table></figure>
 <ul>
 <li>使用range(),创建一个发射特定整数序列的Observable，第一个参数为起始值，第二个为发送的个数，如果为0则不发送，负数则抛异常：</li>
 </ul>
-<p>rangeObservable = Observable.range(10, 5);//将发送整数10，11，12，13，14</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rangeObservable = Observable.range(10, 5);//将发送整数10，11，12，13，14</div></pre></td></tr></table></figure>
 <ul>
 <li>使用timer(),创建一个Observable，它在一个给定的延迟后发射一个特殊的值，等同于Android中Handler的postDelay()方法：</li>
 </ul>
-<p>timeObservable = Observable.timer(3, TimeUnit.SECONDS);  //3秒后发射一个值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">timeObservable = Observable.timer(3, TimeUnit.SECONDS);  //3秒后发射一个值</div></pre></td></tr></table></figure>
 <ul>
 <li>使用repeat(),创建一个重复发射特定数据的Observable:</li>
 </ul>
-<p>repeatObservable = Observable.just(“repeatObservable”).repeat(3);//重复发射3次</p>
-<p>###Observer的创建<br>mObserver = new Observer<string>() {<br>@Override<br>public void onCompleted() {<br>LogUtil.log(“onCompleted”);<br>}<br>@Override<br>public void onError(Throwable e) {<br>}<br>@Override<br>public void onNext(String s) {<br>LogUtil.log(s);<br>}<br>};</string></p>
-<p>###Observable和Observer关联<br>justObservable.subscribe(mObserver);<br>mObserver的onNext方法将会依次收到来自justObservable的数据”just1”、”just2”，另外，如果你不在意数据是否接收完或者是否出现错误，即不需要Observer的onCompleted()和onError()方法，可使用Action1，subscribe()支持将Action1作为参数传入,RxJava将会调用它的call方法来接收数据，代码如下：  </p>
-<p>justObservable.subscribe(new Action1<string>() {<br>@Override<br>public void call(String s) {<br>LogUtil.log(s);<br>}<br>});</string></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">repeatObservable = Observable.just(<span class="string">"repeatObservable"</span>).repeat(3);//重复发射3次</div><div class="line"><span class="comment">###Observer的创建</span></div><div class="line">mObserver = new Observer&lt;String&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void <span class="function"><span class="title">onCompleted</span></span>() &#123;</div><div class="line">LogUtil.log(<span class="string">"onCompleted"</span>);</div><div class="line">&#125;</div><div class="line">@Override</div><div class="line">public void onError(Throwable e) &#123;</div><div class="line">&#125;</div><div class="line">@Override</div><div class="line">public void onNext(String s) &#123;</div><div class="line">LogUtil.log(s);</div><div class="line">&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>###Observable和Observer关联</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">justObservable.subscribe(mObserver);</div></pre></td></tr></table></figure>
+<p>mObserver的onNext方法将会依次收到来自justObservable的数据”just1”、”just2”，另外，如果你不在意数据是否接收完或者是否出现错误，即不需要Observer的onCompleted()和onError()方法，可使用Action1，subscribe()支持将Action1作为参数传入,RxJava将会调用它的call方法来接收数据，代码如下：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">justObservable.subscribe(new Action1&lt;String&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void call(String s) &#123;</div><div class="line">LogUtil.log(s);</div><div class="line">&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>##例子</p>
-<p>####从数据库的用户表查找出所有用户数据<br>Observable.create(new Observable.OnSubscribe<list<user>&gt;() {<br>@Override<br>public void call(Subscriber&lt;? super List<user>&gt; subscriber) {<br>List<user> userList = null;<br>···<br>//从数据库获取用户表数据并赋给userList<br>···<br>subscriber.onNext(userList);<br>}<br>}).subscribe(new Action1<list<user>&gt;() {<br>@Override<br>public void call(List<user> users) {<br>//获取到用户信息列表<br>}<br>});</user></list<user></user></user></list<user></p>
-<p>####只查询名字是“小明”的用户<br>Observable.create(new Observable.OnSubscribe<list<user>&gt;() {<br>@Override<br>public void call(Subscriber&lt;? super List<user>&gt; subscriber) {<br>List<user> userList = null;<br>···<br>//从数据库获取用户表数据并赋给userList<br>···<br>subscriber.onNext(userList);<br>}<br>}).flatMap(new Func1<list<user>, Observable<user>&gt;() {<br>@Override<br>public Observable<user> call(List<user> users) {<br>return Observable.from(users);<br>}<br>}).filter(new Func1<user, boolean="">() {<br>@Override<br>public Boolean call(User user) {<br>return user.getName().equals(“小明”);<br>}<br>}).subscribe(new Action1<user>() {<br>@Override<br>public void call(User user) {<br>//拿到谜之小明的数据<br>}<br>});</user></user,></user></user></user></list<user></user></user></list<user></p>
-<p>####改为查询小明爸爸的数据<br>Observable.create(new Observable.OnSubscribe<list<user>&gt;() {<br>@Override<br>public void call(Subscriber&lt;? super List<user>&gt; subscriber) {<br>List<user> userList = null;<br>···<br>//从数据库获取用户表数据并赋给userList<br>···<br>subscriber.onNext(userList);<br>}<br>}).flatMap(new Func1<list<user>, Observable<user>&gt;() {<br>@Override<br>public Observable<user> call(List<user> users) {<br>return Observable.from(users);<br>}<br>}).filter(new Func1<user, boolean="">() {<br>@Override<br>public Boolean call(User user) {<br>return user.getName().equals(“小明”);<br>}<br>}).map(new Func1<user, user="">() {<br>@Override<br>public User call(User user) {<br>//根据小明的数据user从数据库查找出小明的父亲user2<br>return user2;<br>}<br>}).subscribe(new Action1<user>() {<br>@Override<br>public void call(User user2) {<br>//拿到谜之小明的爸爸的数据<br>}<br>});</user></user,></user,></user></user></user></list<user></user></user></list<user></p>
+<p>####从数据库的用户表查找出所有用户数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Observable.create(new Observable.OnSubscribe&lt;List&lt;User&gt;&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void call(Subscriber&lt;? super List&lt;User&gt;&gt; subscriber) &#123;</div><div class="line">List&lt;User&gt; userList = null;</div><div class="line">···</div><div class="line">//从数据库获取用户表数据并赋给userList</div><div class="line">···</div><div class="line">subscriber.onNext(userList);</div><div class="line">&#125;</div><div class="line">&#125;).subscribe(new Action1&lt;List&lt;User&gt;&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void call(List&lt;User&gt; users) &#123;</div><div class="line">//获取到用户信息列表</div><div class="line">&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>####只查询名字是“小明”的用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">Observable.create(new Observable.OnSubscribe&lt;List&lt;User&gt;&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void call(Subscriber&lt;? super List&lt;User&gt;&gt; subscriber) &#123;</div><div class="line">List&lt;User&gt; userList = null;</div><div class="line">···</div><div class="line">//从数据库获取用户表数据并赋给userList</div><div class="line">···</div><div class="line">subscriber.onNext(userList);</div><div class="line">&#125;</div><div class="line">&#125;).flatMap(new Func1&lt;List&lt;User&gt;, Observable&lt;User&gt;&gt;() &#123;</div><div class="line">@Override</div><div class="line">public Observable&lt;User&gt; call(List&lt;User&gt; users) &#123;</div><div class="line"><span class="built_in">return</span> Observable.from(users);</div><div class="line">&#125;</div><div class="line">&#125;).filter(new Func1&lt;User, Boolean&gt;() &#123;</div><div class="line">@Override</div><div class="line">public Boolean call(User user) &#123;</div><div class="line"><span class="built_in">return</span> user.getName().equals(<span class="string">"小明"</span>);</div><div class="line">&#125;</div><div class="line">&#125;).subscribe(new Action1&lt;User&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void call(User user) &#123;</div><div class="line">//拿到谜之小明的数据</div><div class="line">&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>####改为查询小明爸爸的数据</p>
+<p><code>bash
+Observable.create(new Observable.OnSubscribe&lt;List&lt;User&gt;&gt;() {
+@Override
+public void call(Subscriber&lt;? super List&lt;User&gt;&gt; subscriber) {
+List&lt;User&gt; userList = null;
+···
+//从数据库获取用户表数据并赋给userList
+···
+subscriber.onNext(userList);
+} 
+}).flatMap(new Func1&lt;List&lt;User&gt;, Observable&lt;User&gt;&gt;() {
+@Override
+public Observable&lt;User&gt; call(List&lt;User&gt; users) {
+return Observable.from(users);
+}
+}).filter(new Func1&lt;User, Boolean&gt;() {
+@Override
+public Boolean call(User user) {
+return user.getName().equals(&quot;小明&quot;);
+}
+}).map(new Func1&lt;User, User&gt;() {
+@Override
+public User call(User user) { 
+//根据小明的数据user从数据库查找出小明的父亲user2
+return user2;
+}
+}).subscribe(new Action1&lt;User&gt;() {
+@Override
+public void call(User user2) {
+//拿到谜之小明的爸爸的数据
+}
+});</code> bash</p>
 
       
 
