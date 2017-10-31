@@ -304,89 +304,16 @@
 
       
         
-          
-            <p>##基本概念</p>
+          <p>##基本概念</p>
 <p>####Observable<br>发射源，英文释义“可观察的”，在观察者模式中称为“被观察者”或“可观察对象”；</p>
-<p>####Observer<br>接收源，英文释义“观察者”，没错！就是观察者模式中的“观察者”，可接收Observable、Subject发射的数据；</p>
-<p>####Subject<br>Subject是一个比较特殊的对象，既可充当发射源，也可充当接收源，为避免初学者被混淆，本章将不对Subject做过多的解释和使用，重点放在Observable和Observer上，先把最基本方法的使用学会，后面再学其他的都不是什么问题；</p>
-<p>####Subscriber<br>“订阅者”，也是接收源，那它跟Observer有什么区别呢？Subscriber实现了Observer接口，比Observer多了一个最重要的方法unsubscribe( )，用来取消订阅，当你不再想接收数据了，可以调用unsubscribe( )方法停止接收，Observer 在 subscribe() 过程中,最终也会被转换成 Subscriber 对象，一般情况下，建议使用Subscriber作为接收源；</p>
-<p>####Subscription<br>Observable调用subscribe( )方法返回的对象，同样有unsubscribe( )方法，可以用来取消订阅事件；</p>
-<p>####Action0<br>RxJava中的一个接口，它只有一个无参call（）方法，且无返回值，同样还有Action1，Action2…Action9等，Action1封装了含有 1 个参的call（）方法，即call（T t），Action2封装了含有 2 个参数的call方法，即call（T1 t1，T2 t2），以此类推；</p>
-<p>####Func0<br>与Action0非常相似，也有call（）方法，但是它是有返回值的，同样也有Func0、Func1…Func9;</p>
-<p>##基本用法</p>
-<p>###Observable的创建</p>
-<ul>
-<li>使用create( ),最基本的创建方式：  </li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">normalObservable = Observable.create(new Observable.OnSubscribe&lt;String&gt;() &#123;</div><div class="line">@Override  </div><div class="line">public void call(Subscriber&lt;? super String&gt; subscriber) &#123;</div><div class="line">subscriber.onNext(<span class="string">"create1"</span>); //发射一个<span class="string">"create1"</span>的String</div><div class="line">subscriber.onNext(<span class="string">"create2"</span>); //发射一个<span class="string">"create2"</span>的String</div><div class="line">subscriber.onCompleted();//发射完成,这种方法需要手动调用onCompleted，才会回调Observer的onCompleted方法</div><div class="line">&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<ul>
-<li>使用just()创建一个Observable并自动调用onNext()发射数据：  </li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">justObservable = Observable.just(<span class="string">"just1"</span>,<span class="string">"just2"</span>);//依次发送<span class="string">"just1"</span>和<span class="string">"just2"</span></div></pre></td></tr></table></figure>
-<ul>
-<li>使用from()遍历集合，发送每个item：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">List&lt;String&gt; list = new ArrayList&lt;&gt;();</div><div class="line">list.add(<span class="string">"from1"</span>);</div><div class="line">list.add(<span class="string">"from2"</span>);</div><div class="line">list.add(<span class="string">"from3"</span>);</div><div class="line">fromObservable = Observable.from(list);  //遍历list 每次发送一个</div><div class="line">/** 注意，just()方法也可以传list，但是发送的是整个list对象，而from（）发送的是list的一个item** /</div><div class="line">* 使用defer()，有观察者订阅时才创建Observable，并且为每个观察者创建一个新的Observable：</div><div class="line"></div><div class="line">deferObservable = Observable.defer(new Func0&lt;Observable&lt;String&gt;&gt;() &#123;</div><div class="line">@Override</div><div class="line">//注意此处的call方法没有Subscriber参数</div><div class="line">public Observable&lt;String&gt; <span class="function"><span class="title">call</span></span>() &#123;</div><div class="line"><span class="built_in">return</span> Observable.just(<span class="string">"deferObservable"</span>);</div><div class="line">&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<ul>
-<li>使用interval(),创建一个按固定时间间隔发射整数序列的Observable，可用作定时器：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">intervalObservable = Observable.interval(1, TimeUnit.SECONDS);//每隔一秒发送一次</div></pre></td></tr></table></figure>
-<ul>
-<li>使用range(),创建一个发射特定整数序列的Observable，第一个参数为起始值，第二个为发送的个数，如果为0则不发送，负数则抛异常：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rangeObservable = Observable.range(10, 5);//将发送整数10，11，12，13，14</div></pre></td></tr></table></figure>
-<ul>
-<li>使用timer(),创建一个Observable，它在一个给定的延迟后发射一个特殊的值，等同于Android中Handler的postDelay()方法：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">timeObservable = Observable.timer(3, TimeUnit.SECONDS);  //3秒后发射一个值</div></pre></td></tr></table></figure>
-<ul>
-<li>使用repeat(),创建一个重复发射特定数据的Observable:</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">repeatObservable = Observable.just(<span class="string">"repeatObservable"</span>).repeat(3);//重复发射3次</div><div class="line"><span class="comment">###Observer的创建</span></div><div class="line">mObserver = new Observer&lt;String&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void <span class="function"><span class="title">onCompleted</span></span>() &#123;</div><div class="line">LogUtil.log(<span class="string">"onCompleted"</span>);</div><div class="line">&#125;</div><div class="line">@Override</div><div class="line">public void onError(Throwable e) &#123;</div><div class="line">&#125;</div><div class="line">@Override</div><div class="line">public void onNext(String s) &#123;</div><div class="line">LogUtil.log(s);</div><div class="line">&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>###Observable和Observer关联</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">justObservable.subscribe(mObserver);</div></pre></td></tr></table></figure>
-<p>mObserver的onNext方法将会依次收到来自justObservable的数据”just1”、”just2”，另外，如果你不在意数据是否接收完或者是否出现错误，即不需要Observer的onCompleted()和onError()方法，可使用Action1，subscribe()支持将Action1作为参数传入,RxJava将会调用它的call方法来接收数据，代码如下：  </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">justObservable.subscribe(new Action1&lt;String&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void call(String s) &#123;</div><div class="line">LogUtil.log(s);</div><div class="line">&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>##例子</p>
-<p>####从数据库的用户表查找出所有用户数据</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Observable.create(new Observable.OnSubscribe&lt;List&lt;User&gt;&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void call(Subscriber&lt;? super List&lt;User&gt;&gt; subscriber) &#123;</div><div class="line">List&lt;User&gt; userList = null;</div><div class="line">···</div><div class="line">//从数据库获取用户表数据并赋给userList</div><div class="line">···</div><div class="line">subscriber.onNext(userList);</div><div class="line">&#125;</div><div class="line">&#125;).subscribe(new Action1&lt;List&lt;User&gt;&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void call(List&lt;User&gt; users) &#123;</div><div class="line">//获取到用户信息列表</div><div class="line">&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>####只查询名字是“小明”的用户</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">Observable.create(new Observable.OnSubscribe&lt;List&lt;User&gt;&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void call(Subscriber&lt;? super List&lt;User&gt;&gt; subscriber) &#123;</div><div class="line">List&lt;User&gt; userList = null;</div><div class="line">···</div><div class="line">//从数据库获取用户表数据并赋给userList</div><div class="line">···</div><div class="line">subscriber.onNext(userList);</div><div class="line">&#125;</div><div class="line">&#125;).flatMap(new Func1&lt;List&lt;User&gt;, Observable&lt;User&gt;&gt;() &#123;</div><div class="line">@Override</div><div class="line">public Observable&lt;User&gt; call(List&lt;User&gt; users) &#123;</div><div class="line"><span class="built_in">return</span> Observable.from(users);</div><div class="line">&#125;</div><div class="line">&#125;).filter(new Func1&lt;User, Boolean&gt;() &#123;</div><div class="line">@Override</div><div class="line">public Boolean call(User user) &#123;</div><div class="line"><span class="built_in">return</span> user.getName().equals(<span class="string">"小明"</span>);</div><div class="line">&#125;</div><div class="line">&#125;).subscribe(new Action1&lt;User&gt;() &#123;</div><div class="line">@Override</div><div class="line">public void call(User user) &#123;</div><div class="line">//拿到谜之小明的数据</div><div class="line">&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>####改为查询小明爸爸的数据</p>
-<p><code>bash
-Observable.create(new Observable.OnSubscribe&lt;List&lt;User&gt;&gt;() {
-@Override
-public void call(Subscriber&lt;? super List&lt;User&gt;&gt; subscriber) {
-List&lt;User&gt; userList = null;
-···
-//从数据库获取用户表数据并赋给userList
-···
-subscriber.onNext(userList);
-} 
-}).flatMap(new Func1&lt;List&lt;User&gt;, Observable&lt;User&gt;&gt;() {
-@Override
-public Observable&lt;User&gt; call(List&lt;User&gt; users) {
-return Observable.from(users);
-}
-}).filter(new Func1&lt;User, Boolean&gt;() {
-@Override
-public Boolean call(User user) {
-return user.getName().equals(&quot;小明&quot;);
-}
-}).map(new Func1&lt;User, User&gt;() {
-@Override
-public User call(User user) { 
-//根据小明的数据user从数据库查找出小明的父亲user2
-return user2;
-}
-}).subscribe(new Action1&lt;User&gt;() {
-@Override
-public void call(User user2) {
-//拿到谜之小明的爸爸的数据
-}
-});</code> bash</p>
-
-          
+<p>####Observer<br>接收源，英文释义“观察者”，没错！就是观察者模式中的“观察者”，可接收Observable、Subject发射的数据；<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/31/Hexo-搭建成功/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -503,18 +430,14 @@ public void call(User user2) {
 
       
         
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
+          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/30/hello-world/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
