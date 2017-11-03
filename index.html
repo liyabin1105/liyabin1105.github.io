@@ -304,30 +304,15 @@
 
       
         
-          
-            <p>#Android Studio 3.0新功能特性和旧项目适配</p>
-<p>####官方更新说明<br><a href="https://developer.android.google.cn/studio/releases/index.html" target="_blank" rel="external">https://developer.android.google.cn/studio/releases/index.html</a></p>
-<p>###gradle.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#新的dex编译器</div><div class="line">android.enableD8 = true</div></pre></td></tr></table></figure></p>
-<p>###build.gradle</p>
-<ul>
-<li>productFlavors 要求每个flavor都有配置一个dimension属性  </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">demo &#123;  </div><div class="line">	dimension &quot;DimenA&quot;  </div><div class="line">	applicationId &quot;com.stone.myapplication.pro&quot;  </div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>这些dimension要配置在一个地方，一般放在defaultConfig中：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">defaultConfig &#123;</div><div class="line">	...</div><div class="line">	flavorDimensions &quot;DimenA&quot;, &quot;DimenB&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>applicationVariants中的变化<br>3.0前可以改变apk的输出路径和名字：  </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">applicationVariants.all &#123; variant -&gt;</div><div class="line">	variant.outputs.each &#123; output -&gt;</div><div class="line">		output.outputFile = ...</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>3.0中，outputFile只有get方法，没有set方法了，所以不能通过这种方式设置  </p>
-<p>可以通过如下方式，设置输出apk的名字：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">applicationVariants.all &#123; variant -&gt;</div><div class="line">	variant.outputs.all &#123;</div><div class="line">		outputFileName = &quot;v$&#123;variant.versionName&#125;_$&#123;variant.flavorName&#125;&#125;.apk&quot;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>关于variant.outputs.each 要说的一点是：该迭代器，访问的对象需要在构建之前就已经是存在的。测试时发现如果在each内操作一个File对象，其对应的文件必须事先存在，才能操作；且在构建任务一开始运行时就被执行了。  </p>
-<p>##旧项目适配</p>
-
-          
+          <p>#Android Studio 3.0新功能特性和旧项目适配</p>
+<p>####官方更新说明<br><a href="https://developer.android.google.cn/studio/releases/index.html" target="_blank" rel="external">https://developer.android.google.cn/studio/releases/index.html</a><br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/03/Android Studio 3.0新功能特性和旧项目适配/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
