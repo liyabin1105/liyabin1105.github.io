@@ -81,17 +81,19 @@
 
 
 
-<meta name="description" content="#Android Studio 3.0新功能特性和旧项目适配 ####官方更新说明https://developer.android.google.cn/studio/releases/index.html">
+<meta name="description" content="官方更新说明https://developer.android.google.cn/studio/releases/index.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Studio 3.0新功能特性和旧项目适配">
 <meta property="og:url" content="http://yoursite.com/2017/11/03/Android Studio 3.0新功能特性和旧项目适配/index.html">
 <meta property="og:site_name" content="李亚彬">
-<meta property="og:description" content="#Android Studio 3.0新功能特性和旧项目适配 ####官方更新说明https://developer.android.google.cn/studio/releases/index.html">
+<meta property="og:description" content="官方更新说明https://developer.android.google.cn/studio/releases/index.html">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-03T03:50:09.000Z">
+<meta property="og:image" content="http://yoursite.com/img/as3.png">
+<meta property="og:updated_time" content="2017-11-03T06:59:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Studio 3.0新功能特性和旧项目适配">
-<meta name="twitter:description" content="#Android Studio 3.0新功能特性和旧项目适配 ####官方更新说明https://developer.android.google.cn/studio/releases/index.html">
+<meta name="twitter:description" content="官方更新说明https://developer.android.google.cn/studio/releases/index.html">
+<meta name="twitter:image" content="http://yoursite.com/img/as3.png">
 
 
 
@@ -263,7 +265,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-03T11:41:23+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-03T14:55:59+08:00">
                 2017-11-03
               </time>
             
@@ -301,11 +303,11 @@
       
 
       
-        <p>#Android Studio 3.0新功能特性和旧项目适配</p>
-<p>####官方更新说明<br><a href="https://developer.android.google.cn/studio/releases/index.html" target="_blank" rel="external">https://developer.android.google.cn/studio/releases/index.html</a><br><a id="more"></a></p>
-<p>###gradle.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#新的dex编译器</div><div class="line">android.enableD8 = true</div></pre></td></tr></table></figure></p>
-<p>###build.gradle</p>
-<ul>
+        <h4 id="官方更新说明"><a href="#官方更新说明" class="headerlink" title="官方更新说明"></a>官方更新说明</h4><p><a href="https://developer.android.google.cn/studio/releases/index.html" target="_blank" rel="external">https://developer.android.google.cn/studio/releases/index.html</a>  </p>
+<p><img src="/img/as3.png" alt="Android Logo">   </p>
+<a id="more"></a>
+<h3 id="gradle-properties"><a href="#gradle-properties" class="headerlink" title="gradle.properties"></a>gradle.properties</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#新的dex编译器</div><div class="line">android.enableD8 = true</div></pre></td></tr></table></figure>
+<h3 id="build-gradle"><a href="#build-gradle" class="headerlink" title="build.gradle"></a>build.gradle</h3><ul>
 <li>productFlavors 要求每个flavor都有配置一个dimension属性  </li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">demo &#123;  </div><div class="line">	dimension &quot;DimenA&quot;  </div><div class="line">	applicationId &quot;com.stone.myapplication.pro&quot;  </div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -321,8 +323,7 @@
 <p>可以通过如下方式，设置输出apk的名字：  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">applicationVariants.all &#123; variant -&gt;</div><div class="line">	variant.outputs.all &#123;</div><div class="line">		outputFileName = &quot;v$&#123;variant.versionName&#125;_$&#123;variant.flavorName&#125;&#125;.apk&quot;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>关于variant.outputs.each 要说的一点是：该迭代器，访问的对象需要在构建之前就已经是存在的。测试时发现如果在each内操作一个File对象，其对应的文件必须事先存在，才能操作；且在构建任务一开始运行时就被执行了。  </p>
-<p>##旧项目适配</p>
-
+<h2 id="旧项目适配"><a href="#旧项目适配" class="headerlink" title="旧项目适配"></a>旧项目适配</h2>
       
     </div>
     
@@ -346,7 +347,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/31/Hexo-搭建成功/" rel="next" title="RxJava 学习笔记">
+              <a href="/2017/10/30/Hexo-搭建成功/" rel="next" title="RxJava 学习笔记">
                 <i class="fa fa-chevron-left"></i> RxJava 学习笔记
               </a>
             
@@ -406,8 +407,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -462,6 +472,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#官方更新说明"><span class="nav-number">1.</span> <span class="nav-text">官方更新说明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gradle-properties"><span class="nav-number"></span> <span class="nav-text">gradle.properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#build-gradle"><span class="nav-number"></span> <span class="nav-text">build.gradle</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旧项目适配"><span class="nav-number"></span> <span class="nav-text">旧项目适配</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
